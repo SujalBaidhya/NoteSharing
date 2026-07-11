@@ -6,28 +6,29 @@ import { Link, useLocation } from 'react-router-dom';
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
-    const [user, setUser] = useState(null);
+    const {user, setUser} = useAuth();
     const navigate = useNavigate();
-    useEffect(() => {
+    // useEffect(() => {
 
-        axios.get(
-            "http://127.0.0.1:8000/user",
-            {
-                withCredentials: true,
-                withXSRFToken :true
-            }
-        )
-        .then(res => {
-            setUser(res.data);
-        })
-        .catch(() => {
-            setUser(null);
-        });
+    //     axios.get(
+    //         "http://127.0.0.1:8000/user",
+    //         {
+    //             withCredentials: true,
+    //             withXSRFToken :true
+    //         }
+    //     )
+    //     .then(res => {
+    //         setUser(res.data);
+    //     })
+    //     .catch(() => {
+    //         setUser(null);
+    //     });
 
-    }, []);
+    // }, []);
 
     const navItems = [
         { id: 'home', label: 'Home', path: '/' },
