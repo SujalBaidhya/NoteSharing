@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import axios from "../api/axios";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
+import LoginForm from "../Components/LoginForm";
+import { useEffect } from "react";
 const Upload = () => {
-    const {user, setUser} = useAuth();
+    
+    const {user} = useAuth();
     const [errors, setErrors] = useState({});
     const [showLoginModal, setShowLoginModal] = useState(false);
-    const navigate = useNavigate();
     const [form, setForm] = useState({
         title: "",
         faculty: "",
@@ -16,7 +17,13 @@ const Upload = () => {
         description: "",
         file: null,
     });
+    useEffect(() => {
+        console.log("Upload mounted");
+    }, []);
 
+    useEffect(() => {
+        console.log("User changed:", user);
+    }, [user]);
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -40,14 +47,13 @@ const Upload = () => {
                 file: "",
             }));
         };
-    const validateForm = () => {
-        const validationRules = {
-            title: "Title is required.",
-            faculty: "Please select a faculty.",
-            semester: "Please select a semester.",
-            subject: "Subject is required.",
-            description: "Description is required.",
-        };
+        const validateForm = () => {
+            const validationRules = {
+                title: "Title is required.",
+                faculty: "Please select a faculty.",
+                semester: "Please select a semester.",
+                subject: "Subject is required.",
+            };
 
         const newErrors = {};
 
@@ -85,7 +91,6 @@ const Upload = () => {
         const formData = new FormData();
         formData.append("title", form.title);
         formData.append("faculty", form.faculty);
-        formData.append("created_by", user.name);
         formData.append("subject", form.subject);
         formData.append("semester", form.semester);
         formData.append("description", form.description);
@@ -103,7 +108,15 @@ const Upload = () => {
             );
             console.log(res.data);
             alert("Uploaded successfully!");
-
+            setForm({
+                title: "",
+                faculty: "",
+                subject: "",
+                semester: "",
+                description: "",
+                file: null,
+            });
+            setErrors({});
         } catch (err) {
             console.error("UPLOAD ERROR FULL:", err);
 
@@ -164,17 +177,17 @@ const Upload = () => {
                         <option value="BBS">BBS</option>
                     </select>
                     {errors.faculty && (
-    <p className="text-red-500 text-sm mt-1">
-        {errors.faculty}
-    </p>
-)}
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.faculty}
+                        </p>
+                    )}
                     <select
                         name="semester"
                         value={form.semester}
                         onChange={handleChange}
                         className={`w-full rounded-lg p-3 border ${
-        errors.semester ? "border-red-500" : "border-gray-300"
-    }`}
+                            errors.semester ? "border-red-500" : "border-gray-300"
+                        }`}
                     >
                         <option value="">Select Semester</option>
                         <option value="1">1st Semester</option>
@@ -187,10 +200,10 @@ const Upload = () => {
                         <option value="8">8th Semester</option>
                     </select>
                     {errors.semester && (
-    <p className="text-red-500 text-sm mt-1">
-        {errors.semester}
-    </p>
-)}
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.semester}
+                        </p>
+                    )}
                     <input
                         type="text"
                         name="subject"
@@ -198,15 +211,15 @@ const Upload = () => {
                         value={form.subject}
                         onChange={handleChange}
                         className={`w-full rounded-lg p-3 border ${
-        errors.subject ? "border-red-500" : "border-gray-300"
-    }`}
+                            errors.subject ? "border-red-500" : "border-gray-300"
+                        }`}
                     />
 
                     {errors.subject && (
-    <p className="text-red-500 text-sm mt-1">
-        {errors.subject}
-    </p>
-)}
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.subject}
+                        </p>
+                    )}
 
                     <textarea
                         rows="5"
@@ -218,10 +231,10 @@ const Upload = () => {
                     />
                     <div>
                     <label className={`cursor-pointer px-2 py-3 rounded-lg inline-block text-white ${
-            errors.file
-                ? "bg-red-500 hover:bg-red-600"
-                : "bg-blue-600 hover:bg-blue-700"
-        }`}>
+                        errors.file
+                            ? "bg-blue-500 hover:bg-blue-600"
+                            : "bg-blue-600 hover:bg-blue-700"
+                    }`}>
                         📄 Choose PDF
                     <input
                         type="file"
@@ -230,10 +243,10 @@ const Upload = () => {
                         className="hidden"
                     />
                     {errors.file && (
-        <p className="text-red-500 text-sm mt-2">
-            {errors.file}
-        </p>
-    )}
+                        <p className="text-red-500 text-sm mt-2">
+                            {errors.file}
+                        </p>
+                    )}
                     </label>
                     {form.file && (
                         <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
@@ -246,10 +259,14 @@ const Upload = () => {
 
 
                     <button
+                        type="submit"
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition"
                     >
                         Upload Note
                     </button>
+                    </form>
+
+            </div>
                     {showLoginModal && (
                         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                             <div className="bg-white rounded-lg shadow-lg p-6 w-96">
@@ -264,32 +281,13 @@ const Upload = () => {
 
                                 <div className="flex justify-end gap-3">
 
-                                    <button
-                                        onClick={() => setShowLoginModal(false)}
-                                        className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
-                                    >
-                                        Cancel
-                                    </button>
-
-                                    <button
-                                        onClick={() => {
-                                            setShowLoginModal(false);
-                                            navigate("/login");
-                                        }}
-                                        className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-                                    >
-                                        Login
-                                    </button>
-
+                                    <LoginForm onSuccess={() => setShowLoginModal(false)} 
+                                                onCancel={() => setShowLoginModal(false)}/>
+                                         
                                 </div>
-
                             </div>
                         </div>
                     )}
-                </form>
-
-            </div>
-
         </div>
     );
 };
