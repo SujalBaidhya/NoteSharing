@@ -16,7 +16,6 @@ class NoteController extends Controller
         $request->validate([
             'title' => 'required',
             'faculty' => 'required|string',
-            'created_by' => 'required|string',
             'subject' => 'required',
             'semester' => 'required|integer|between:1,8',
             'description' => 'nullable',
@@ -24,7 +23,6 @@ class NoteController extends Controller
         ]);
 
         $file_path = $request->file('file')->store('notes', 'public');
-
         $note = Note::create([
             'title' => $request->title,
             'faculty' => $request->faculty,
@@ -46,8 +44,8 @@ class NoteController extends Controller
             ->latest()
             ->get()
             ->map(function ($note) {
-            $note->file_url = $note->file_path
-                ? asset('storage/' . $note->file_path)
+            $note->file_url = $note->file
+                ? asset('storage/' . $note->file)
                 : null;
             return $note;
         });
