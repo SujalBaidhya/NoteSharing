@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
@@ -22,3 +23,6 @@ Route::middleware('auth')->get('/user', function (Request $request) {
         )
     ]);
 });
+
+    Route::get('/notes/my-notes', [NoteController::class, 'myNotes']);
+    Route::delete('/notes/{note}', [NoteController::class, 'destroy']);

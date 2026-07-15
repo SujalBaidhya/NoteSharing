@@ -33,6 +33,7 @@ const Header = () => {
     const navItems = [
         { id: 'home', label: 'Home', path: '/' },
         { id: 'hire', label: 'Notes', path: '/notes' },
+        { id: 'MyNotes', label: 'MyNotes', path: '/my-notes' },
         { id: 'blog', label: 'Upload', path: '/upload' },
         { id: 'about', label: 'About', path: '/about us' },
         { id: 'contact', label: 'Contact', path: '/contact' }

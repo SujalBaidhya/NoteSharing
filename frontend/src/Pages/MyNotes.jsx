@@ -8,8 +8,12 @@ export default function MyNotes() {
     const [deletingId, setDeletingId] = useState(null);
     useEffect(() => {
         axios.get("/notes/my-notes")
-            .then(res => {console.log(res.data);setNotes(res.data)})
-            .catch(err => console.error("Failed to load notes:", err))
+            .then(res => {console.log("Response:", res);
+            console.log("Data:", res.data);setNotes(res.data)})
+            .catch(err => {
+            console.log("Status:", err.response?.status);
+            console.log("Data:", err.response?.data);
+        })
             .finally(() => setLoading(false));
     }, []);
     console.log(notes);

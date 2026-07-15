@@ -40,8 +40,8 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'User Registered Successfully',
-            'user' =>['
-            id' => $user->id,
+            'user' =>[
+            'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'profile_picture' => asset(

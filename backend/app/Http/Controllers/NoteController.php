@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Note;
+use Illuminate\Support\Facades\Storage;
 class NoteController extends Controller
 {
     public function index(){
@@ -37,6 +38,37 @@ class NoteController extends Controller
         return response()->json([
             'message' => 'Uploaded Successfully',
             'note' => $note,
+        ]);
+    }
+    public function myNotes(Request $request)
+    {
+        $notes = Note::where('created_by', $request->user()->name)
+            ->latest()
+            ->get()
+            ->map(function ($note) {
+            $note->file_url = $note->file_path
+                ? asset('storage/' . $note->file_path)
+                : null;
+            return $note;
+        });
+        return response()->json($notes);
+    }
+    public function destroy(Request $request, Note $note)
+    {
+        if ($note->created_by !== $request->user()->name) {
+            return response()->json([
+                'message' => 'You are not authorized to delete this note.'
+            ], 403);
+        }
+
+        if ($note->file && Storage::disk('public')->exists($note->file)) {
+            Storage::disk('public')->delete($note->file);
+        }
+
+        $note->delete();
+
+        return response()->json([
+            'message' => 'Note deleted successfully.'
         ]);
     }
 }
