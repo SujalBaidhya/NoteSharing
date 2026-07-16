@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Note;
 use Illuminate\Support\Facades\Storage;
@@ -35,6 +35,50 @@ class NoteController extends Controller
 
         return response()->json([
             'message' => 'Uploaded Successfully',
+            'note' => $note,
+        ]);
+    }
+    public function update(Request $request, Note $note)
+    {
+        if ($note->created_by !== $request->user()->name) {
+            return response()->json([
+                'message' => 'You are not authorized to edit this note.'
+            ], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'faculty' => 'required|string',
+            'subject' => 'required|string',
+            'semester' => 'required',
+            'description' => 'nullable|string',
+            'file' => 'nullable|mimes:pdf|max:10240',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $note->title = $request->title;
+        $note->faculty = $request->faculty;
+        $note->subject = $request->subject;
+        $note->semester = $request->semester;
+        $note->description = $request->description;
+
+        if ($request->hasFile('file')) {
+            if ($note->file && Storage::disk('public')->exists($note->file)) {
+                Storage::disk('public')->delete($note->file);
+            }
+            $note->file = $request->file('file')->store('notes', 'public');
+        }
+
+        $note->save();
+
+        return response()->json([
+            'message' => 'Note updated successfully.',
             'note' => $note,
         ]);
     }

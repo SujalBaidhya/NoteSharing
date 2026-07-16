@@ -86,7 +86,7 @@ const Upload = () => {
         formData.append("semester", form.semester);
         formData.append("description", form.description);
         formData.append("file", form.file);
-
+        console.log(formData);
         try {
             const res = await axios.post(
                 "/api/notes",

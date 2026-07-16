@@ -32,9 +32,7 @@ const filteredNotes = notes.filter((note) => {
         note.semester === selectedSemester
     );
 });
-console.log(typeof selectedSemester, selectedSemester);
-console.log(typeof notes[0]?.semester, notes[0]?.semester);
-    return (
+return (
         <div className="min-h-screen bg-gray-50 py-12">
 
             <div className="max-w-6xl mx-auto px-6">

@@ -23,6 +23,6 @@ Route::middleware('auth')->get('/user', function (Request $request) {
         )
     ]);
 });
-
-    Route::get('/notes/my-notes', [NoteController::class, 'myNotes']);
-    Route::delete('/notes/{note}', [NoteController::class, 'destroy']);
+Route::get('/notes/my-notes', [NoteController::class,'myNotes']);
+Route::delete('/notes/{note}', [NoteController::class,'destroy']);
+Route::post('/notes/{note}', [NoteController::class, 'update']);
