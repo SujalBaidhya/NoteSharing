@@ -5,8 +5,6 @@ import AuthPage from './Components/AuthPage';
 import { AuthProvider } from "./context/AuthContext";
 import LoginForm from "./Components/LoginForm";
 import Home from './Pages/Home';
-import Hire from './Pages/Hire';
-import Blog from './Pages/Blog';
 import About from './Pages/About';
 import Contact from './Pages/Contact';
 import Login from './Pages/Login';
@@ -14,6 +12,7 @@ import Signup from './Pages/Signup';
 import Upload from './Pages/Upload';
 import Notes from './Pages/Notes';
 import MyNotes from './Pages/MyNotes';
+import ForgotPassword from './Pages/ForgotPass';
 function App() {
   return (
     <Router>
@@ -23,8 +22,6 @@ function App() {
         <main className="pt-20 px-6">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/hire" element={<Hire />} />
-            <Route path="/blog" element={<Blog />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
@@ -32,6 +29,7 @@ function App() {
             <Route path="/upload" element={<Upload />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/my-notes" element={<MyNotes />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </main>
       </div>

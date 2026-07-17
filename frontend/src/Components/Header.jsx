@@ -35,7 +35,7 @@ const Header = () => {
         { id: 'hire', label: 'Notes', path: '/notes' },
         { id: 'MyNotes', label: 'MyNotes', path: '/my-notes' },
         { id: 'blog', label: 'Upload', path: '/upload' },
-        { id: 'about', label: 'About', path: '/about us' },
+        { id: 'about', label: 'About', path: '/about' },
         { id: 'contact', label: 'Contact', path: '/contact' }
     ];
     const handleLogout = async () => {
