@@ -17,7 +17,7 @@ const Hero = () => {
     const totalNotes=notes.length;
     const previewNotes=notes.slice(0,3);
     const stats = [
-    { label: "Notes shared", value: totalNotes }, /*baidhyaaaaaaaaaaaaaa  here add a variable to count no of uploaded notes */
+    { label: "Notes shared", value: totalNotes },
     { label: "Faculties", value: "6" },
     { label: "Semesters", value: "1–8" },
     ];

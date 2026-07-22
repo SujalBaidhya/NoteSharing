@@ -90,10 +90,6 @@ class AuthController extends Controller
 
         Cache::forget('registration_otp_' . $request->email);
         Cache::forget('registration_pending_' . $request->email);
-
-        Auth::login($user);
-        $request->session()->regenerate();
-
         return response()->json([
             'message' => 'Email verified and account created successfully.',
             'user' => [
@@ -171,7 +167,7 @@ class AuthController extends Controller
             true,
             now()->addMinutes(10)
         );
-
+        \Log::info('SET verified key: ' . 'password_reset_verified_'.$request->email);
         Cache::forget(
             'password_reset_otp_'.$request->email
         );
@@ -186,7 +182,8 @@ class AuthController extends Controller
             'email'=>'required|email',
             'password'=>'required|confirmed|min:6'
         ]);
-
+        \Log::info('GET verified key: ' . 'password_reset_verified_'.$request->email);
+        \Log::info('Cache value: ' . json_encode(Cache::get('password_reset_verified_'.$request->email)));
         if(!Cache::get('password_reset_verified_'.$request->email)){
             return response()->json([
                 'message'=>'OTP verification required.'

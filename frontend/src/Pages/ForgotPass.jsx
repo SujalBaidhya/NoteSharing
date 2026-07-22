@@ -7,7 +7,8 @@ export default function ForgotPassword() {
     const navigate=useNavigate();
     const handleSubmit = async(e) => {
         e.preventDefault();
-        try{const response = await axios.post("/forgot-password/otp", { email });
+        try{
+        const response = await axios.post("/forgot-password/otp", { email });
         navigate("/otp", {
             state: {
                 email: email,

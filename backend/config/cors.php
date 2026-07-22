@@ -13,7 +13,8 @@ return [
     'register/*',
     'register',
     'forgot-password/*',
-    'resetpassword'
+    'resetpassword',
+    'admin/*'
     ],
 
     'allowed_methods' => ['*'],

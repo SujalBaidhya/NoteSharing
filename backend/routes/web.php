@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NoteController;
 use Illuminate\Http\Request;
@@ -39,6 +40,14 @@ Route::post('/register/send-otp', [AuthController::class, 'sendOtp']);
 Route::post('/register/verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('/register/resend-otp', [AuthController::class, 'resendOtp']);
 Route::post('/forgot-password/send-otp', [AuthController::class, 'sendOtp']);
-Route::post('/forgot-password/verify-otp', [AuthController::class, 'verifyOtp']);
+Route::post('/forgot-password/verify-otp', [AuthController::class, 'verifyForgotPasswordOtp']);
 Route::post('/forgot-password/otp',[AuthController::class,'forgotPassword']);
 Route::post('/resetpassword',[AuthController::class,'resetPassword']);
+Route::post('/forgot-password/resend-otp', [AuthController::class, 'resendForgotPasswordOtp']);
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::get('/admin/users', [AdminController::class, 'users']);
+    Route::get('/admin/notes', [AdminController::class, 'notes']);
+    Route::delete('/admin/notes/{id}', [AdminController::class, 'deleteNote']);
+    Route::delete('/admin/users/{id}', [AdminController::class, 'destroy']);
+    Route::get('/admin/users/{id}/notes', [AdminController::class, 'userNotes']);
+});
